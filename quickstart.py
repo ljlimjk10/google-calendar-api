@@ -1,13 +1,6 @@
-from __future__ import print_function
-import datetime
-from os import path
-import httplib2
-from googleapiclient.discovery import build
-from google.oauth2 import service_account
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-import googleapiclient.discovery
 import os
+import googleapiclient.discovery
+from google.oauth2 import service_account
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -23,13 +16,14 @@ class GoogleCalendar:
     
     
     def getCalendarList(self):
+        '''Get title of all calendars in user'''
         calendar_list = service.calendarList().list().execute()
         for calendar_list_entry in calendar_list['items']:
             print(calendar_list_entry['summary'])
     
     
     def getCalendarId(self, title):
-        '''Returns the calendars on the user's calendar list'''
+        '''Returns calendarId of specific calendar'''
         calendar_list = service.calendarList().list().execute()
         for calendar_list_entry in calendar_list['items']:
             if calendar_list_entry['summary'] == title:
@@ -58,11 +52,5 @@ class GoogleCalendar:
         self.getCalendarId(title)
         service.calendars().delete(calendarId=self.calendar_id).execute()
 
-
-
-abc = GoogleCalendar()
-# abc.createCalendar('Test Case')
-# abc.updateCalendar('Test Case','Updated Test Case')
-abc.getCalendarList()
 
 
