@@ -21,10 +21,11 @@ class UserList(generics.GenericAPIView,
     lookup_field = "username"
 
     def get(self, request, *args, **kwargs):
-        return self.list(self, request, *args, **kwargs)
+        return self.list(request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
-        return self.create(self, request, *args, **kwargs)
+        print("hello")
+        return self.create(request, *args, **kwargs)
 
 
 class UserDetails(generics.GenericAPIView,
@@ -37,10 +38,10 @@ class UserDetails(generics.GenericAPIView,
     lookup_field = "username"
 
     def get(self, request, *args, **kwargs):
-        return self.retrieve(self, request, *args, **kwargs)
+        return self.retrieve(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
-        return self.update(self, request, *args, **kwargs)
+        return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
-        return self.destroy(self, request, *args, **kwargs)
+        return self.destroy(request, *args, **kwargs)
