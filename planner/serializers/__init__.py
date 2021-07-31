@@ -1,2 +1,2 @@
 from .user_serializers import UserSerializer
-from .event_serializers import CalendarEventSerializer, CalendarSerializer
+from .event_serializers import CalendarEventSerializer, CalendarSerializer, CalendarEventUpdateSerializer
