@@ -37,8 +37,8 @@ class GoogleCalendar:
             'summary': calendarTitle,
             'timeZone': 'Asia/Singapore'
         }
-        calendar_created = service.calendars().insert(body=calendar_metadata, fields='id').execute()
-        calendarId = calendar_created.get('id')
+        calendar = service.calendars().insert(body=calendar_metadata, fields='id').execute()
+        calendarId = calendar.get('id')
         return calendarId
 
     def updateCalendar(self,calendarTitle:str,updatedCalendarTitle:str):
@@ -65,6 +65,7 @@ class GoogleCalendarEvent:
             if calendar_list_entry['summary'] == calendarTitle:
                 print(f"Calender:{calendarTitle} found")
                 self.calendar_id = calendar_list_entry['id']
+        return self.calendar_id 
 
     def getCalendarEventId(self,calendarTitle:str,eventTitle:str):
         self.getCalendarId(calendarTitle)
@@ -98,12 +99,13 @@ class GoogleCalendarEvent:
             }
         }
 
-        event = service.events().insert(calendarId=self.calendar_id, body=event_metadata).execute()
-        print("Event Created")
+        event = service.events().insert(calendarId=self.calendar_id, body=event_metadata, fields='id').execute()
+        eventId = event.get('id')
+        return eventId
 
-    def updateCalendarEvent(self,calendar_title=None,eventTitle=None,location=None,description=None,startDateTime=None,endDateTime=None):
-        self.getCalendarEventId(calendar_title, eventTitle)
-        event = service.events().get(calendarId=self.calendar_id, eventId=self.event_id).execute()
+    def updateCalendarEvent(self,calendarId,eventId,eventTitle=None,location=None,description=None,startDateTime=None,endDateTime=None):
+
+        event = service.events().get(calendarId=calendarId, eventId=eventId).execute()
         if eventTitle: 
             event['summary'] = eventTitle
         
@@ -119,9 +121,8 @@ class GoogleCalendarEvent:
         if endDateTime:
            event['end']['dateTime'] = endDateTime
 
-        updated_event = service.events().update(calendarId=self.calendar_id, eventId=self.event_id, body=event).execute()
-        
-
+        updated_event = service.events().update(calendarId=calendarId, eventId=eventId, body=event).execute()
+        return eventId
         
 
 
